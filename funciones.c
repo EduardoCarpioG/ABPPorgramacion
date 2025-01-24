@@ -5,9 +5,6 @@
 
 void inicializarZonas(Zona zonas[]) {
     for (int i = 0; i < MAX_ZONAS; i++) {
-        snprintf(zonas[i].nombre, 50, "Zona_%d", i + 1);
-        zonas[i].nivelActual = 0.0;
-        zonas[i].prediccion = 0.0;
         for (int j = 0; j < MAX_DIAS; j++) {
             zonas[i].datosHistoricos[j] = (float)(rand() % 50 + 10); // Valores aleatorios entre 10 y 50
         }
@@ -19,6 +16,7 @@ void cargarDatos(Zona zonas[]) {
     if (archivo) {
         for (int i = 0; i < MAX_ZONAS; i++) {
             fscanf(archivo, "%49s", zonas[i].nombre);
+            fscanf(archivo, "%f", &zonas[i].nivelActual);
             for (int j = 0; j < MAX_DIAS; j++) {
                 fscanf(archivo, "%f", &zonas[i].datosHistoricos[j]);
             }
@@ -31,7 +29,7 @@ void guardarDatos(Zona zonas[]) {
     FILE *archivo = fopen("datos_zonas.txt", "w");
     if (archivo) {
         for (int i = 0; i < MAX_ZONAS; i++) {
-            fprintf(archivo, "%s ", zonas[i].nombre);
+            fprintf(archivo, "%s %.2f ", zonas[i].nombre, zonas[i].nivelActual);
             for (int j = 0; j < MAX_DIAS; j++) {
                 fprintf(archivo, "%.2f ", zonas[i].datosHistoricos[j]);
             }
